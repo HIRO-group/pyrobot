@@ -4,7 +4,7 @@ The Projector System is a system designed to create a new pathway of visual comm
 
 Currently, the system exists as a catkin package within HIRO's fork of PyRobot: https://github.com/HIRO-group/pyrobot/tree/master/robots/LoCoBot/projector_system. Detailed instructions on how to use the Projector System exist there. This system is currently designed to work within [PyRobot](https://www.pyrobot.org/) on a [LoCoBot](http://locobot.org). To install PyRobot on your machine, follow the directions below or visit https://www.pyrobot.org/.
 
-
+-------
 
 <a href="https://www.pyrobot.org/"><img class="doc_vid" src="docs/website/website/static/img/pyrobot.svg"></a>
 
