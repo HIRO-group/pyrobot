@@ -1,4 +1,4 @@
-### Projector System
+## Projector System
 
 The Projector System currently consists of a catkin package resding in this directory. 
 
