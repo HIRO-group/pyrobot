@@ -1,3 +1,11 @@
+# Projector System
+
+The Projector System is a system designed to create a new pathway of visual communication between robots and humans. By projecting internal robot information like destinations, path trajectory, and obstacle detection into real space, the Projector System can provide humans with a better understanding of a robot's goals and capabilities. The Projector System uses light projection to project signs and animations onto floors and walls, which is designed to broadcast this information in a clear and accessible way. The goal of developing this system is to strengthen communications between humans and robots and increase humans' trust in and comfort around robots. 
+
+Currently, the system exists as a catkin package within HIRO's fork of PyRobot: https://github.com/HIRO-group/pyrobot/tree/master/robots/LoCoBot/projector_system. Detailed instructions on how to use the Projector System exist there. This system is currently designed to work within [PyRobot](https://www.pyrobot.org/) on a [LoCoBot](http://locobot.org). To install PyRobot on your machine, follow the directions below or visit https://www.pyrobot.org/.
+
+
+
 <a href="https://www.pyrobot.org/"><img class="doc_vid" src="docs/website/website/static/img/pyrobot.svg"></a>
 
 [PyRobot](https://www.pyrobot.org/) is a light weight, high-level interface which provides hardware independent APIs for robotic manipulation and navigation. This repository also contains the low-level stack for [LoCoBot](http://locobot.org), a low cost mobile manipulator hardware platform.
