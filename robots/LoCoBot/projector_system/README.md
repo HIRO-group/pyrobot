@@ -39,7 +39,7 @@ Currently, the system is equipped to display an animation on the display of the 
 
 
 
-### Possible Issues and Errors
+#### Possible Errors and Fixes
 
 * **Error**: `main.launch` terminal session displays an error resembling:
 
