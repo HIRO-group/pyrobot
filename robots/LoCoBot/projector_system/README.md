@@ -1,6 +1,6 @@
 ## Projector System
 
-The Projector System currently consists of a catkin package resding in this directory. 
+The Projector System currently consists of a catkin package residing in this directory. 
 
 
 #### Basic Setup:
