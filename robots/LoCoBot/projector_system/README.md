@@ -9,7 +9,13 @@ Currently, the system is equipped to display an animation on the display of the 
 
 1. SSH into the LoCoBot.
 
-2. Run `source ~/pyenv_pyrobot/bin/activate` and `export DISPLAY:=0`on all terminals you will be using. (`export DISPLAY:=0` re-routes any GUIs or windows that launch as result of you commands to launch on the LoCoBot's display)
+2. Run 
+      ```
+      source ~/pyenv_pyrobot/bin/activate
+      export DISPLAY:=0
+      ```
+
+      on all terminals you will be using. (`export DISPLAY:=0` re-routes any GUIs or windows that launch as result of you commands to launch on the LoCoBot's display)
 
 3. [Calibrate the robot](https://pyrobot.org/docs/calibration) if needed.
 
