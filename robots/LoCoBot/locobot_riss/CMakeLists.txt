@@ -161,9 +161,10 @@ include_directories(
 ## in contrast to setup.py, you can choose the destination
 catkin_install_python(PROGRAMS
   scripts/tests/CircleDr.py
-  scripts/depth_collect.py
+  scripts/dev/depth_collect.py
   scripts/starter_file.py
   scripts/tests/camera_control.py
+  scripts/dev/fgm_dev.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
