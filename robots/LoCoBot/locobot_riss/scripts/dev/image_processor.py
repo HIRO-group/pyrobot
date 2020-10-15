@@ -1,12 +1,15 @@
+#!/home/m_dyse/pyenvs/pyro3_ws/bin/python
 import numpy as np
 import matplotlib.pyplot as plt
 from pyrobot.utils.util import try_cv2_import
 cv = try_cv2_import()
 
+
 def get_end_points(line, x1, x2):
 	y1 = int(line[0] * x1 + line[1])
 	y2 = int(line[0] * x2 + line[1])
 	return (x1, y1), (x2, y2)
+
 
 class Image_Processor():
 	def __init__(self, protocol={}, resolution=(480, 640)):
@@ -59,6 +62,7 @@ class Image_Processor():
 				source = self.results[-1][0].copy()
 			else:
 				source = frame.copy()
+
 			if step == 'crop': # 'crop': [bounds]
 				y_min = int(protocol[step][0][1] * self.height)
 				y_max = int(protocol[step][0][3] * self.height)
@@ -99,7 +103,7 @@ class Image_Processor():
 				self.results.append((cv.addWeighted(temp_img, 0.8, line_img, 1.0, 0.0),f'Houghp lines-{len(self.results)}'))
 				self.returns[step] = lines
 
-			if step == 'draw-line': # 'draw-line': [[[x,y,x,y],[...]],thickness,color]
+			if step == 'draw-line': # 'draw-line': [[[x,y,x,y],[...]],color,thickness]
 				annotated_img = source.copy()
 				for x1,y1,x2,y2 in protocol[step][0]:
 					start_point = (int(x1),int(y1))
@@ -121,5 +125,13 @@ class Image_Processor():
 				contours, hierarchy = cv.findContours(source,protocol[step][0],protocol[step][1])
 				self.results.append((cv.drawContours(temp_img, contours, -1, (0,255,0), 3),f'Contours-{len(self.results)}'))
 				self.returns[step] = (contours, hierarchy)
+
+			if step == 'plot': # 'plot' [[[(x,y)...],[(x,y)...]],[(r,g,b),(r,g,b)..]]
+				img = np.zeros((self.height, self.width, 3))
+				for i,plot in enumerate(protocol[step][0]):
+					for j,point in enumerate(plot[1:]):
+						cv.line(img, plot[j], point, protocol[step][1][i], 10)
+				self.results.append((img, f'Plot-{len(self.results)}'))
+
 
 		return self.returns
