@@ -27,7 +27,7 @@ class Image_Processor():
 		cols = np.min([4,len(self.results)])
 		rows = np.max([int(len(self.results) / cols + .9),1])
 		step = 0
-		fig, axes = plt.subplots(rows, cols)
+		fig, axes = plt.subplots(rows, cols, figsize=(12,7))
 		if rows > 1:
 			for r in range(rows):
 				for c in range(cols):
@@ -115,7 +115,7 @@ class Image_Processor():
 				annotated_img = source.copy()
 				for point in protocol[step][0]:
 					cv.circle(annotated_img, point, protocol[step][1], protocol[step][2], protocol[step][3])
-					self.results.append((annotated_img, f'Draw-Circle-{len(self.results)}'))
+				self.results.append((annotated_img, f'Draw-Circle-{len(self.results)}'))
 
 			if step == 'contours': # 'contours': [return style, approx style]
 				if self.channels == -1 :

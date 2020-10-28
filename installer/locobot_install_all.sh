@@ -401,7 +401,7 @@ if [ $PYTHON_VERSION == "3" ]; then
   	fi
 	pip install catkin_pkg pyyaml empy rospkg
 	catkin_make
-	echo "alias load_pyro_ws='source $LOCOBOT_FOLDER/devel/setup.bash'" >> ~/.bashrc
+	echo "alias load_pyro_ws='source $LOCOBOT_FOLDER/devel/setup.bash && export GAZEBO_MODEL_PATH=~/$LOCOBOT_FOLDER/src/pyrobot/robots/LoCoBot/locobot_gazebo/models:$GAZEBO_MODEL_PATH'" >> ~/.bashrc
 	source $LOCOBOT_FOLDER/devel/setup.bash
 
 	cd $LOCOBOT_FOLDER/src/pyrobot
