@@ -162,9 +162,10 @@ include_directories(
 catkin_install_python(PROGRAMS
   scripts/tests/CircleDr.py
   scripts/dev/depth_collect.py
-  scripts/starter_file.py
+  scripts/wander.py
+  scripts/starter.py
   scripts/tests/camera_control.py
-  scripts/dev/fgm_dev.py
+  scripts/dev/fgm.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
