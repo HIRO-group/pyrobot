@@ -1,10 +1,10 @@
 <launch>
     <arg name="use_camera" default="true"/>
-    <arg name="use_arm" default="false"/>
+    <arg name="use_arm" default="true"/>
     <arg name="use_vslam" default="false"/>
     <arg name="use_base" default="true"/>
     <arg name="torque_control" default="false"/>
-    <arg name="use_sim" default="true"/>
+    <arg name="use_sim" default="false"/>
     <arg name="teleop" default="false"/>
     <arg name="use_rviz" default="false"/>
     <arg name="base" default="kobuki"/> <!-- Options: create and kobuki -->

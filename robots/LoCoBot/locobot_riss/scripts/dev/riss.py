@@ -1,4 +1,4 @@
-#!/home/m_dyse/pyenvs/pyro3_ws/bin/python
+#!/home/locobot/pyenvs/pyro3_ws/bin/python
 # Copyright (c) Facebook, Inc. and its affiliates.
 
 # This source code is licensed under the MIT license found in the
@@ -12,7 +12,7 @@ except:
 
 
 def get_time_str():
-	return time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime()) 
+	return time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
 
 
 class simple_planner():
@@ -37,11 +37,11 @@ class simple_planner():
 
 		if self.memory.shape[0] > 4:
 			if self.memory[-1] - self.memory[-2] - self.memory[-3] > self.reset_threshold:
-				return True 
+				return True
 
 		if self.tracer.shape[0] > 4:
 			if self.tracer[-1] - self.tracer[-2] - self.tracer[-3] > self.reset_threshold:
-				return True 
+				return True
 
 		return False
 
@@ -106,8 +106,8 @@ class RISS():
 		if np.sum(weight) == 0:
 			weight = [100, -1]
 			exe_time = np.random.rand() * 3
-			
-		
+
+
 		vector = [weight[1], weight[0]]
 
 		if self.verbose:
@@ -128,12 +128,14 @@ class RISS():
 			exe_time = 3
 
 		if self.visualize:
-			cp = np.array(self.resolution / 2).astype(np.int)
+			cp = np.array([self.resolution[0] / 2, self.resolution[1] / 2]).astype(np.int)
 			protocol=[
-				{'draw-line' : [[[cp[0],cp[1],cp[0]-(turn_speed * 100 * exe_time) ,cp[1]-(fwd_speed * 100 * exe_time)]],(1,0,0),3]},
+				{'draw-line' : [[(cp[0],cp[1],cp[0]-(turn_speed * 100 * exe_time) ,cp[1]-(fwd_speed * 100 * exe_time))],(1,0,0),3]},
 				{'crop' : [[0,0,1,1]],
 				'plot' : [[u_slice, l_slice],[(0,0,1),(1,0,0)]]}
 				]
 			_ = self.processor.process(image_rgb.copy(), protocol=protocol[0])
 			_ = self.processor.process(image_d.copy(), protocol=protocol[1], new_sequence=False, sequence=False)
 			self.processor.display(save=f'scripts/dev/gen/img-processor-{ctr}{get_time_str()}.png')
+
+		return (fwd_speed, turn_speed), exe_time

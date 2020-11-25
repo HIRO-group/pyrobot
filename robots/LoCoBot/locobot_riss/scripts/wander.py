@@ -11,7 +11,7 @@ from pyrobot import Robot
 from absl import flags, app
 
 BOT_NAME = 'locobot'
-CONFIG = {'base_controller': 'ilqr', 'base_planner': 'movebase'} # not sure why but the tutorials say so   
+CONFIG = {'base_controller': 'ilqr', 'base_planner': 'movebase'} # not sure why but the tutorials say so
 
 
 def main(_):
@@ -45,7 +45,7 @@ def main(_):
 		"""
 		image_d = (robot.camera.get_depth() * 1000).astype(np.int)
 		image_rgb = robot.camera.get_rgb()
-		
+
 		(fwd_speed, turn_speed), exe_time = riss.get_heading(image_d, image_rgb, robot.base.get_state('odom'), name=name)
 		print(f'{name} Alpha ({fwd_speed},{turn_speed})')
 
