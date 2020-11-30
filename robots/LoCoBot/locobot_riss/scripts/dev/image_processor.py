@@ -126,12 +126,12 @@ class Image_Processor():
 				self.results.append((cv.drawContours(temp_img, contours, -1, (0,255,0), 3),f'Contours-{len(self.results)}'))
 				self.returns[step] = (contours, hierarchy)
 
-			if step == 'plot': # 'plot' [[[(x,y)...],[(x,y)...]],[(r,g,b),(r,g,b)..]]
-				img = np.zeros((self.height, self.width, 3))
+			if step == 'plot': # 'plot' [[[(x,y)...],[(x,y)...]],[(r,g,b),(r,g,b)..], depth]
+				annotated_img = np.zeros((protocol[step][2], self.width, 3))
 				for i,plot in enumerate(protocol[step][0]):
 					for j,point in enumerate(plot[1:]):
-						cv.line(img, plot[j], point, protocol[step][1][i], 10)
-				self.results.append((img, f'Plot-{len(self.results)}'))
+						cv.line(annotated_img, plot[j], point, protocol[step][1][i], 10)
+				self.results.append((annotated_img, f'Plot-{len(self.results)}'))
 
 
 		return self.returns

@@ -3,6 +3,7 @@
 
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
+import time
 import numpy as np
 import matplotlib.pyplot as plt
 try:
@@ -92,7 +93,7 @@ class RISS():
 				depth_relative = int(u_slice[x]) - int(l_slice[x]) # difference between slices
 				depth_actual = int(u_slice[x]) + int(l_slice[x]) / 2 # average depth of two slices
 				# weight of sections
-				left_gain = (1 - (mp / mp_actual)) * self.gain[0]
+				left_gain = (1 - (mp / mp_actual)**2) * self.gain[0]
 				center_gain = (mp / mp_actual) * self.gain[1]
 				# get Interest
 				edge_intrest = left_gain * (x - init_point) * (depth_relative + depth_actual - 1.5)
@@ -117,8 +118,9 @@ class RISS():
 		return vector / np.linalg.norm(vector), exe_time
 
 	def get_heading(self, image_d, image_rgb, state, name='[INFO]'):
-		u_slice = image_d[self.high]
-		l_slice = image_d[self.low]
+		""" Wrapper for getting alpha from image slices """
+		u_slice = np.array(image_d[self.high])
+		l_slice = np.array(image_d[self.low])
 
 		(fwd_speed, turn_speed), exe_time = self.get_alpha_from_image_slice(u_slice, l_slice, name=name)
 
@@ -129,13 +131,13 @@ class RISS():
 
 		if self.visualize:
 			cp = np.array([self.resolution[0] / 2, self.resolution[1] / 2]).astype(np.int)
+			slice_max = np.max([np.max(u_slice), np.max(l_slice)])
 			protocol=[
-				{'draw-line' : [[(cp[0],cp[1],cp[0]-(turn_speed * 100 * exe_time) ,cp[1]-(fwd_speed * 100 * exe_time))],(1,0,0),3]},
+				{'draw-line' : [[[cp[0],cp[1],cp[0]-(turn_speed * 100) ,cp[1]-(fwd_speed * 100)]],(1,0,0),3]},
 				{'crop' : [[0,0,1,1]],
-				'plot' : [[u_slice, l_slice],[(0,0,1),(1,0,0)]]}
-				]
+				'plot' : [[list(zip(np.arange(0,image_d.shape[1]), (slice_max - u_slice) * 45)), list(zip(np.arange(0,image_d.shape[1]), (slice_max - l_slice) * 45))],[(0,0,1),(1,0,0)], slice_max * 45]}]
 			_ = self.processor.process(image_rgb.copy(), protocol=protocol[0])
 			_ = self.processor.process(image_d.copy(), protocol=protocol[1], new_sequence=False, sequence=False)
-			self.processor.display(save=f'scripts/dev/gen/img-processor-{ctr}{get_time_str()}.png')
+			self.processor.display()#save=f'scripts/dev/gen/img-processor-{get_time_str()}.png')
 
 		return (fwd_speed, turn_speed), exe_time
