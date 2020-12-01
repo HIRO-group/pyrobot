@@ -27,7 +27,7 @@ class simple_planner():
 
 	def observe(self, state, trajectory):
 		if self.memory.shape[0] >= self.max_steps:
-			self.memory = np.concatenate([self.memory[1:],state])
+			self.memory = np.concatenate([self.memory[1:], state])
 		else:
 			self.memory = np.concatenate([self.memory, state])
 
@@ -57,7 +57,7 @@ class simple_planner():
 
 class RISS():
 
-	def __init__(self, start_point, image_resolution, high, low, gains=(1e-1,1e-1), memory_length=200, verbose=False, visualize=False):
+	def __init__(self, start_point, image_resolution, high, low, gains=(1e-1,1e-3), memory_length=200, verbose=False, visualize=False):
 		self.gain = gains # Mostly to prevent overflow of the accumulator
 		self.planner = simple_planner(start_point) # simple path tracking and adjustments
 		self.resolution = image_resolution
@@ -94,10 +94,10 @@ class RISS():
 				depth_actual = int(u_slice[x]) + int(l_slice[x]) / 2 # average depth of two slices
 				# weight of sections
 				left_gain = (1 - (mp / mp_actual)**2) * self.gain[0]
-				center_gain = (mp / mp_actual) * self.gain[1]
+				center_gain = mp_actual - np.abs(mp - mp_actual) * self.gain[1]
 				# get Interest
 				edge_intrest = left_gain * (x - init_point) * (depth_relative + depth_actual - 1.5)
-				center_intrest = center_gain * (x - init_point) * (depth_relative + depth_actual - 1.25)
+				center_intrest = center_gain * (x - init_point) * (depth_relative + depth_actual - 1.75)
 				#update
 				weight[0] += edge_intrest
 				weight[1] += center_intrest
@@ -106,7 +106,7 @@ class RISS():
 		# when no interests turn around
 		if np.sum(weight) == 0:
 			weight = [100, -1]
-			exe_time = np.random.rand() * 3
+			exe_time = 2
 
 
 		vector = [weight[1], weight[0]]
@@ -126,16 +126,17 @@ class RISS():
 
 		if self.planner.observe(state, (fwd_speed, turn_speed)):
 			fwd_speed = -0.1
-			turn_speed = np.random.choice([-1, 1])
-			exe_time = 3
+			turn_speed = -0.7
+			exe_time = 1
 
 		if self.visualize:
-			cp = np.array([self.resolution[0] / 2, self.resolution[1] / 2]).astype(np.int)
+			cp = np.array([self.resolution[1] / 2, self.resolution[0] / 2]).astype(np.int)
 			slice_max = np.max([np.max(u_slice), np.max(l_slice)])
+
 			protocol=[
 				{'draw-line' : [[[cp[0],cp[1],cp[0]-(turn_speed * 100) ,cp[1]-(fwd_speed * 100)]],(1,0,0),3]},
 				{'crop' : [[0,0,1,1]],
-				'plot' : [[list(zip(np.arange(0,image_d.shape[1]), (slice_max - u_slice) * 45)), list(zip(np.arange(0,image_d.shape[1]), (slice_max - l_slice) * 45))],[(0,0,1),(1,0,0)], slice_max * 45]}]
+				'plot' : [[list(zip(np.arange(0,image_d.shape[1]), (slice_max - u_slice) * 45)), list(zip(np.arange(0,image_d.shape[1]), (slice_max - l_slice) * 45))],[(0,0,1),(1,0,0)], slice_max * 45, len(u_slice)]}]
 			_ = self.processor.process(image_rgb.copy(), protocol=protocol[0])
 			_ = self.processor.process(image_d.copy(), protocol=protocol[1], new_sequence=False, sequence=False)
 			self.processor.display()#save=f'scripts/dev/gen/img-processor-{get_time_str()}.png')
