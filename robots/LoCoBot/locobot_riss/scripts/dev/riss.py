@@ -94,7 +94,7 @@ class RISS():
 				depth_actual = int(u_slice[x]) + int(l_slice[x]) / 2 # average depth of two slices
 				# weight of sections
 				left_gain = (1 - (mp / mp_actual)**2) * self.gain[0]
-				center_gain = np.abs(mp - mp_actual) * self.gain[1]
+				center_gain = mp_actual - np.abs(mp - mp_actual) * self.gain[1]
 				# get Interest
 				edge_intrest = left_gain * (x - init_point) * (depth_relative + depth_actual - 1.5)
 				center_intrest = center_gain * (x - init_point) * (depth_relative + depth_actual - 1.75)
