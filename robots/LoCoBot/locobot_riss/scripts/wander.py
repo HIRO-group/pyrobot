@@ -49,7 +49,7 @@ def main(_):
 		if sim:
 			image_d = (robot.camera.get_depth() * 1000).astype(np.int)
 		else:
-			image_d = (robot.camera.get_depth()).astype(np.int)
+			image_d = (robot.camera.get_depth() / 10).astype(np.int)
 		image_rgb = robot.camera.get_rgb()
 
 		(fwd_speed, turn_speed), exe_time = riss.get_heading(image_d, image_rgb, robot.base.get_state('odom'), name=name)

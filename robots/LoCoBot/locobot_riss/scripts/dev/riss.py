@@ -125,9 +125,8 @@ class RISS():
 		(fwd_speed, turn_speed), exe_time = self.get_alpha_from_image_slice(u_slice, l_slice, name=name)
 
 		if self.planner.observe(state, (fwd_speed, turn_speed)):
-			fwd_speed = -0.1
-			turn_speed = -0.7
-			exe_time = 1
+			fwd_speed = -fwd_speed
+			turn_speed = - turn_speed
 
 		if self.visualize:
 			cp = np.array([self.resolution[1] / 2, self.resolution[0] / 2]).astype(np.int)
@@ -141,4 +140,4 @@ class RISS():
 			_ = self.processor.process(image_d.copy(), protocol=protocol[1], new_sequence=False, sequence=False)
 			self.processor.display()#save=f'scripts/dev/gen/img-processor-{get_time_str()}.png')
 
-		return (fwd_speed, turn_speed), exe_time
+		return (fwd_speed / 2, turn_speed / 2), exe_time / 2
